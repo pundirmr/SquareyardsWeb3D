@@ -12,6 +12,13 @@
 <style>
 	body { margin: 0; padding: 0; }
 	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+    #menu {
+    position: absolute;
+    background: #fff;
+    padding: 10px;
+    font-family: 'Open Sans', sans-serif;
+    }
 </style>
 
 <style>
@@ -105,6 +112,24 @@
     </div>
 </div>
 
+<div id="menu">
+    <input
+        id="streets-v8"
+        type="radio"
+        name="rtoggle"
+        value="streets"
+        checked="checked"
+    />
+    <label for="streets-v8">streets</label>
+    <input id="light-v10" type="radio" name="rtoggle" value="light" />
+    <label for="light-v10">light</label>
+    <input id="dark-v10" type="radio" name="rtoggle" value="dark" />
+    <label for="dark-v10">dark</label>
+    <input id="outdoors-v11" type="radio" name="rtoggle" value="outdoors" />
+    <label for="outdoors-v11">outdoors</label>
+    <input id="satellite-v9" type="radio" name="rtoggle" value="satellite" />
+    <label for="satellite-v9">satellite</label>
+</div>
 
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
 <link
@@ -130,6 +155,19 @@ type="text/css"
         container: 'map',
         antialias: true
     });
+
+
+    var layerList = document.getElementById('menu');
+    var inputs = layerList.getElementsByTagName('input');
+
+    function switchLayer(layer) {
+        var layerId = layer.target.id;
+        map.setStyle('mapbox://styles/mapbox/' + layerId);        
+    }
+
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].onclick = switchLayer;
+    }
 
 
     // parameters to ensure the model is georeferenced correctly on the map
@@ -235,9 +273,6 @@ this.map.triggerRepaint();
 };
 
 
-
-
-
     // The 'building' layer in the mapbox-streets vector source contains building-height
     // data from OpenStreetMap.
     map.on('load', function () {
@@ -251,6 +286,7 @@ this.map.triggerRepaint();
                 break;
             }
         }
+        if (! map.getSource('composite')) {map.addSource('composite', { type: 'vector', url: 'mapbox://mapbox.mapbox-streets-v7'});}
 
         map.addLayer(
             {
@@ -290,8 +326,6 @@ this.map.triggerRepaint();
         );
     });
 
-
-    
 
     /* given a query in the form "lng, lat" or "lat, lng" returns the matching
      * geographic coordinate(s) as search results in carmen geojson format,
