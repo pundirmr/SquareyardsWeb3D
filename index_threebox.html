@@ -271,12 +271,14 @@ type="text/css"
 						{defaultLights: true}
 					);
 
-					// import truck from an external obj file, scaling up its size 10x
-					var options = {
-						obj: 'https://squareyards3dmodels.s3.ap-south-1.amazonaws.com/YamunaExpressway/Natura.gltf',
-						//mtl: 'models/Truck.mtl',
-						scale: 10
-					}
+                    var options = {
+                        obj: 'https://squareyards3dmodels.s3.ap-south-1.amazonaws.com/YamunaExpressway/Natura.gltf',
+                        type: 'gltf',
+                        scale: 10,
+                        units: 'meters',
+                        rotation: { x: 0, y: 0, z: 0 }, //default rotation
+                        adjustment: { x: -0.5, y: -0.5, z: 0 } // place the center in one corner for perfect positioning and rotation
+                    }
 
 					tb.loadObj(options, function(model) {
 
